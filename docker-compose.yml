@@ -1,42 +1,34 @@
 services:
-
-  #---------------
-  # SERVICE 1 - MySQL
-  # -------------
   mysql:
     image: mysql:8.0
     container_name: fittrack-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD:  ${DB_ROOT_PASSWORD:-rootpassword}
-      MYSQL_DATABASE:       ${DB_NAME:-fittrack}
-      MYSQL_USER:           ${DB_USER:-fittrack_user}
-      MYSQL_PASSWORD:       ${DB_PASWORD:-fittrack_pass}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-fittrack}
+      MYSQL_USER: ${DB_USER:-fittrack_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-fittrack_pass}
     ports:
-      - "3306.3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - fittrack-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost",
-            "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # SERVICE 2 — Backend Node.js
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
   backend:
     build:
       context: ./backend
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: fittrack-backend
     restart: unless-stopped
-    env_file: .env
+    env_file:
+      - .env
     ports:
       - "5000:5000"
     volumes:
@@ -48,9 +40,6 @@ services:
       mysql:
         condition: service_healthy
 
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # SERVICE 3 — Frontend React
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   frontend:
     build:
       context: ./frontend
@@ -65,16 +54,12 @@ services:
     networks:
       - fittrack-network
 
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # SERVICE 4 — Frontend React
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
   nginx:
     image: nginx:alpine
     container_name: fittrack-nginx
     restart: unless-stopped
     ports:
-      - "80.80"
+      - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
@@ -83,20 +68,16 @@ services:
       - backend
       - frontend
 
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  # SERVICE 5 — phpMyAdmin
-  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  phpMyAdmin:
+  phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: fittrack_phpmyadmin
+    container_name: fittrack-phpmyadmin
     restart: unless-stopped
     environment:
-      PMA_HOST:               mysql
-      PMA_PORT:               3306
-      PMA_USER:               ${DB_USER:-fittrack_user}
-      PMA_PASSWORD:           ${DB_PASWORD:-fittrack_pass}
-      MYSQL_ROOT_PASSWORD:    ${DB_ROOT_PASSWORD:-rootpassword}
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: ${DB_USER:-fittrack_user}
+      PMA_PASSWORD: ${DB_PASSWORD:-fittrack_pass}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
     ports:
       - "8081:80"
     networks:
@@ -105,16 +86,9 @@ services:
       mysql:
         condition: service_healthy
 
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# RÉSEAU INTERNE
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 networks:
   fittrack-network:
     driver: bridge
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# VOLUMES PERSISTANTS
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 volumes:
   mysql_data:
