@@ -1,3 +1,35 @@
+/* Imports Tailwind oligatoires */
+@import "tailwindcss";
+/* Deprecier @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* Styles globaux du thème sombre */
+body{
+  background-color: #0F172A; /* slate-950 */;
+  color: #F1F5F9; /* slate-100 */;
+  font-family: 'Inter', 'Arial', sans-serif; /* slate-950 */;
+}
+
+/* scrollbar personnalisée (webkit: chrome, safari, edge)*/
+::-webkit-scrollbar{
+  width: 6px;
+}
+
+::-webkit-scrollbar-track{
+  background: #1E293B; /* slate-800 */
+}
+
+::-webkit-scrollbar-thumb{
+  background: #475569; /* slate-600 */
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background: #6366F1; /* indigo-500 - couleur d'accentuation*/
+}
+
+
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
