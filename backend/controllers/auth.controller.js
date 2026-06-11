@@ -8,7 +8,7 @@
 // ============= 
 
 const jwt = require('jsonwebtoken');
-const UserLodel = require('.../models/user.model');
+const UserModel = require('.../models/user.model');
 
 // -------- Génération du token JWT ------------
 // jwt.sign(payload, secret, options) crée un token signé
@@ -54,10 +54,82 @@ const AuthController = {
                 return res.status(409).json({error: 'Username already taken.'});
             }
 
-// création en base (le modèle hash le mdp avec bcrypt)
-            const userId = await UserModel.creat({username, email, password, weight, goal});
+            // création en base (le modèle hash le mdp avec bcrypt)
+            const userId = await UserModel.create({username, email, password, weight, goal});
 
             //on récupère l'utilisateur sans le mdp pour la réponse
+            const user = await UserModel.findById(userId);
+            const token = generateToken(user);
+
+            //201 - Created : une ressource a été crée avec succes
+            res.status(201).json({
+                message : "Account created succesfully.",
+                toke,
+                user,
+            });
+        } catch (err){
+            console.error('Register error:', err);
+            res.status(500).json({error: 'failed to create account.'});
+            // 500 = internal Server Error : erreu inattendue coté serveur
         }
-    }
-}
+    },
+
+    // --------- Post /api/auth/login ----------
+    //Vérifie les identifiants et retoune un token JWT si valide.
+    async login(req, res) {
+        try {
+            const {email, password} = req.body;
+
+            if (!email || !password){
+                return res.status(400).json({error: 'Email and password are required'});
+            }
+
+            //Recher de l'utilisateur par email
+            const user = await Usermodel.findByEmail(email);
+            if(!user) {
+                //Meme message que pour un mauvais mdp: évite l'énumération
+                //des comptes (un attanquant/hackeur ne peut pas savoir si l'email exite ou non)
+                return res.status(401).json({ error: 'Invalid credentials.'});
+            }
+
+            //bcrypt.compare() compare le mdp en clair avec le hash en base
+            const isValid = await UserModel.verifyPassword(password, user.password);
+            if (isValid) {
+                return res.status(401).json({error: 'Invalid credentials.'});
+                // 401 = Unauthorized : identifiants incorrects
+            }
+
+            //Destructuration avec rennomage: on extrain password dans `_`_
+            //et on garde le reste dans 'userWithoutpassword'.
+            //La convention `_`signale une variable intentionnelement non utilisée.
+            const {password: _, ...userWithoutPassword } = user;
+            const token = generateToken(user);
+
+            res.json({
+                message: 'Login succesful.',
+                token,
+                user: userWithoutPassword, // le mdp ne quitte jms le serveur
+            });
+        } catch (err) {
+            console.error('Login error:', err);
+            res.status(500).json({error: 'Loggin failed.'});
+        }
+    },
+
+    //---------GET /api/auth/me ------------
+    // Retourne le profil de l'utilisateur actuellement connecté
+    // Cette route est protégé: authMiddlewae a déjà vérifié le JWT
+    // et placé l'identité dans req.user avant darriver ici.
+    async me(req,res){
+        try {
+            //req.user.id est injecté par authMiddleware (voir auth.middleware.js)
+            const user = await UserModel.findById(req.user.id);
+            if (!user) return res.status(404).json({error: 'User not found.'});
+            res.json({user});
+        } catch (err){
+            res.status(500).json({ error: 'Failed to fetch profile.'});
+        }
+    },
+};
+
+module.exports = AuthController;
