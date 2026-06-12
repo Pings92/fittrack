@@ -11,20 +11,20 @@ const express = require('express');
 // express.Router() crée un mini routeur indépendant qu'on peut exporter
 // et brancher dans server.js avec app.use('api/auth', authRoutes)
 
-const routeur = express.Routeur();
+const router = express.Router();
 
 const AuthController = require('.../controllers/auth.controller');
 const authMiddleware = require('.../middleware/auth.middleware');
 
 //POST /api/auth/register - Création de compte (publique, pas de JWT requis)
-routeur.post('/register', AuthController.register);
+router.post('/register', AuthController.register);
 
 //POST /api/auth/login - Connexion (publique, pas de JWT requis)
-routeur.post('/login', AuthController.login)
+router.post('/login', AuthController.login)
 
 // GET /api/auth/me - Profil de 'utilisateur connecté (protégé par JWT)
 // authMiddlware est passé en 2eme argument : il s'exécute AVANT AuthController.me
 // Si le token est  absent/invalide, authMiddleware répond 401 et . me n'est jamais acquis
-routeur. get('/me', authMiddleware, AuthController.me);
+router. get('/me', authMiddleware, AuthController.me);
 
-module.exports = routeur;
+module.exports = router;
