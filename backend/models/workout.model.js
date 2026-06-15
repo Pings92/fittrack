@@ -10,7 +10,7 @@ const db = require('../config/database');
 
 const WorkoutModel = {
 
-    // - READ ALL : lister les séance de l'utilisateur
+    // - READ ALL : lister les séances de l'utilisateur
     async findAllByUser(userId) {
         const [rows] = await db.execute(
             // LEFT JOIN (pas INNER JOIN) : on récupère  les séances même si elles n'ont pas d'exercice | on garde les séances sans exercices
@@ -44,7 +44,7 @@ const WorkoutModel = {
         const [exercises] = await db.execute(
             `SELECT we.*, e.name, e.category, e.muscle_group
             FROM WorkoutExercise we
-            JOIN Exercise e ON we.exercise_id =e.id
+            JOIN Exercise e ON we.exercise_id = e.id
             WHERE we.workout_id =?
             ORDER BY we.id`,
             [id]
@@ -127,8 +127,81 @@ const WorkoutModel = {
 
     //-- DELETE: Supprimer une séance
     async delete(id, userId){
-        const [result] = await db.execute(`DELETE FROM Workout WHERE id = ? AND user_id =?`,[id, userId]);
-        // Les WorkoutExercise associées sont supprimées AUTOMATIQUEMENT grâce à al contraine ON DELETE CASCADE définie dans init.sql. Pas besoin de DELETE explicite sur WorkoutExercice.
+        const [result] = await db.execute(
+            `DELETE FROM Workout WHERE id = ? AND user_id =?`,
+            [id, userId]);
+        // Les WorkoutExercise associées sont supprimées AUTOMATIQUEMENT 
+        // grâce à al contraine ON DELETE CASCADE définie dans init.sql. Pas besoin de DELETE explicite sur WorkoutExercice.
         return result.affectedRows > 0;
     },
-}
+    // ----Stats :  statistique de progression de l'utilisateur
+    // agrège les données en 4 requetes SQL spécialisées 
+    // Toutes retournées dans un seul objet structuré
+
+    async getProgressionStats (userId) {
+        // Statistique gloabales (tous temps)
+        // COALESCE : retourne 0 si SUM/AVG retourne NULL (aucune donnée)
+        const [totalStats] = await db.execute(
+            `SELECT 
+            COUNT(DISTINCT w.id) as total_workouts,
+            COALESCE(SUM(w.duration), 0) as total_minutes,
+            COALESCE(AVG(w.duration), 0)as avg_duration,
+            COUNT(DISTINCT we.exercise_id) as unique_exercises
+            FROM Workout w
+            LEFT JOIN WorkoutExercise we On w.id = we.workout_id
+            WHERE w.user_id =?`,
+            [userId]
+        );
+
+        //Statistique par moi sur les 6 derniers mois
+        // DATE_FORMAT(date, '%Y-%m') regroupe par mois (ex "2025-06") | LIMIT 6 = on remonte 6 mois maximum pour les graphiques
+        const [monthlyStats] = await db.execute (
+            `SELECT
+            DATE_FORMAT(date, '%Y-%m' as month),
+            COUNT(*) as workout_count,
+            COALESCE(SUM(duration), 0) as total_minutes
+            FROM Workout
+            WHERE user_id =?
+            GROUP BY DATE_FORMAT(date, '%Y-%m')
+            ORDER BY month DESC
+            LIMIT 6`,
+            [userId]
+        );
+
+        // 3- Repartition par catégorie d'exercices
+        // DOUBLE JOIN : WorkoutExercise -> Exercise -> Workout | SUM(we.sets * we.reps) = total de répétitions effectuées par catégorie
+        const [categoryStats] = await db.execute (
+            `SELECT
+            e.category,
+            COUNT(we.id) as exercise_count,
+            COALESCE(SUM(we.sets * we.reps), 0) as total_reps
+            FROM WorkoutExercise we
+            JOIN Exercise e ON we.exercise_id = e.id
+            JOIN WORKOUT w ON we.workout_id = w.id
+            WHERE w.user_id = ?
+            GROUP BY e.category`,
+            [userId]
+        );
+
+        //4- 5 dernières séances (résumé pour le dashboard)
+        const [recentWorkouts] = await db.execute (
+            `SELECT id,titlen daten duration
+            FROM Workout
+            WHERE user_id = ?
+            ORDER BY date DESC
+            LIMIT 5`,
+            [userId]
+        );
+
+        // On retourne tout en un seul objet structuré 
+        // Le stats.controller.js n'à qu'à passer cet objet à res.json()
+        return {
+            summary:    totalStats[0], //
+            monthly: monthlyStats,
+            byCategory: categoryStats,
+            recent: recentWorkouts,
+        };
+    },
+};
+
+module.exports = WorkoutModel
