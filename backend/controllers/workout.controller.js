@@ -2,8 +2,8 @@
 // controllers/workout.controller.js - logique métier des séances
 //
 // Gere les opérations de CRUD sur les séances et sur les exercises
-//d'une séance (ajout, modification, suppresion d'un exercise).
-//req.user est inejecté par authMidlleware (contient id, email, username).
+// d'une séance (ajout, modification, suppresion d'un exercise).
+// req.user est inejecté par authMidlleware (contient id, email, username).
 //
 
 const WorkoutModel = require('../models/workout.model');
@@ -15,7 +15,7 @@ const WorkoutController = {
     async getAll(req,res){
         try {
             // req.user.id est l'id de l'utilisateur authentifié (depuis le JWT )
-            // Chaque utilisateur ne voit que ses zséances - isolation garantie côté SQL
+            // Chaque utilisateur ne voit que ses séances - isolation garantie côté SQL
             const workouts = await WorkoutModel.findAllByUser(req.user.id);
             // on renvoie la liste des séance et leiur nombre total en JSON
             res.json({workouts, count: workouts.length});
