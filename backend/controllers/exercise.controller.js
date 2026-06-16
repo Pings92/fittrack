@@ -117,7 +117,7 @@ const ExerciseController = {
             // La contraine FK RESTRICT en BDD lève cette erreur spécifique
             // quand on tente de supprimer un exercise référencé par WorkoutExercise
             if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-                return res.status(409).json({error: 'Cannot delmete: exercise is used in one or more workouts'});
+                return res.status(409).json({error: 'Cannot delete: exercise is used in one or more workouts'});
                 // 409 = Conflict: l'opération est impossible à cause de l'état actuel
             }
             res.status(500).json({error : 'Failed to delete exercise.'});
