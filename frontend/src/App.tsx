@@ -7,7 +7,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Exercises from './pages/Exercises'
-import Workouts from './pages/Workouts'
+import Workouts from './pages/Workout'
 import WorkoutDetail from './pages/WorkoutDetail'
 import Profile from './pages/Profile'
 
@@ -56,5 +56,3 @@ export default function App() {
     </AuthProvider>
   )
 }
-
-export default App
