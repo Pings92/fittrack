@@ -111,7 +111,7 @@ export default function Login() {
                 </form>
                 
                 <p className="text-center text-sm text-slate-500 mt-5">
-                    Pas de compte ?{''}
+                    Pas de compte ? {''}
                     {/* link remplace <a href>: navigation sans rechargement de page */}
                     <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
                     S'inscrire
