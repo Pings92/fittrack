@@ -1,6 +1,7 @@
 // context/AuthContext.ts
 import { createContext } from 'react'
-import { type User } from '../types/index'
+// import { type User } from '../types/index' Original
+import { User } from '../types' //Davy
 
 export interface RegisterData {
     username: string
@@ -13,8 +14,8 @@ export interface RegisterData {
 export interface AuthContextType {
     user: User | null
     loading: boolean
-    login: (email: string, password: string) => Promise<void>
-    register: (data: RegisterData) => Promise<void>
+    login: (email: string, password: string) => Promise <void>
+    register: (data: RegisterData) => Promise <void>
     logout: () => void
 }
 

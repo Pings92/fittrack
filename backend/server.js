@@ -58,7 +58,7 @@ app.get('/api', (req,res)=>{
 // seront accessibles sous ce préfixe.
 // EX : routeur.post('/login) dans auth.routes.js -> POST /api/auth/login
 app.use('api/auth', authRoutes);
-app.use('api/exercices', exercicesRoutes);
+app.use('api/exercises', exercisesRoutes);
 app.use('api/workouts', workoutRoutes);
 app.use('api/stats', statsRoutes);
 

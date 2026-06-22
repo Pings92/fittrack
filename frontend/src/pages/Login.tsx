@@ -59,7 +59,7 @@ export default function Login() {
         <div className="w-full max-w-sm">
             {/*Logo*/}
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 mb-4">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 mb-4">
                     <Dumbbell size={28} className="text-white"/>
                 </div>
                 <h1 className="text-2xl font-bold text-slate-100">FitTrack</h1>
