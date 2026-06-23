@@ -10,7 +10,7 @@ const cors = require ('cors');
 
 //on importechaque fichier - chacun gère un groupe de route
 const authRoutes = require('./routes/auth.routes');
-const exerciseRoutes = require('./routes/exercice.routes');
+const exerciseRoutes = require('./routes/exercise.routes');
 const workoutRoutes = require('./routes/workout.routes');
 const statsRoutes = require('./routes/stats.routes');
 
@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
     origin: process.env.FRONTEND_url || 'http://localhost:3000',
     credentials: true, // Autorise l'envoie de cookies/header d'auth
-    methods: ['Get', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
 }));
 // -- Middleware de parsing
@@ -46,7 +46,7 @@ app.get('/api', (req,res)=>{
         version : '1.0.0',
         endpoints:{
             auth: '/api/auth',
-            exercices: '/api/exercices',
+            exercises: '/api/exercises',
             workouts: '/api/workouts',
             stats: '/api/stats',
         },
@@ -57,10 +57,10 @@ app.get('/api', (req,res)=>{
 // app.use(préfixe, routeur) : toutes les routes défiies dans le fichier
 // seront accessibles sous ce préfixe.
 // EX : routeur.post('/login) dans auth.routes.js -> POST /api/auth/login
-app.use('api/auth', authRoutes);
-app.use('api/exercises', exercisesRoutes);
-app.use('api/workouts', workoutRoutes);
-app.use('api/stats', statsRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/exercises', exerciseRoutes);
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/stats', statsRoutes);
 
 // --Middleware 404 -----
 // si aucune route n'a correspondu, on répond avec une erreur 404
@@ -84,8 +84,8 @@ app.use((err, req, res, next) => {
 // Cela évite des conflits de port et des effet de bord dans les test
 if(process.env.NODE_ENV !== 'test') {
     app.listen(PORT, '0.0.0.0', () => {
-        console.log('FitTrack API running on port ${PORT}');
-        console.log('Environnement: ${process.env.NODE_ENV}');
+        console.log(`FitTrack API running on port ${PORT}`);
+        console.log(`Environnement: ${process.env.NODE_ENV}`);
     });
 }
 

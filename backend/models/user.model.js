@@ -6,7 +6,7 @@
 //si on change de bdd deman, seul ce fichier est à modifier
 // ====================
 
-const db = require('.../config/database');
+const db = require('../config/database');
 const bcrypt = require('bcrypt');
 
 //Nombre de "tours" de hachage bcrypt. Plus c'est élevé, plus c'est lent
@@ -40,7 +40,7 @@ const UserModel = {
     async findByEmail(email) {
         //db.execute retourne [rows, fields] - destructuring pour garder rows/ on destructure pour ne garder que rows
         const [rows] = await db.execute (
-            'SElECT * FROM User WHERE email = ?',
+            'SELECT * FROM User WHERE email = ?',
             [email]
         );
         // rows[0] = premier résultat, ou undefined si pas trouvé | on retourne null plutôt qu'undefined pour des vérifications 

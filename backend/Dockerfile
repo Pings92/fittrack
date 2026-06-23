@@ -11,7 +11,7 @@ COPY package*.json ./
 # Si package.json ne change pas → npm install est mis en cache
 # → rebuild 10x plus rapide si on modifie juste le code
 
-RUN npm install
+RUN npm install / && mv /app/node_modules /nodes_modules
 # Installe les dépendances à l'intérieur du container
 # Exécuté pendant le BUILD de l'image (pas au démarrage)
 

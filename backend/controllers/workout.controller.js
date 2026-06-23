@@ -80,7 +80,7 @@ const WorkoutController = {
 
     // ----------- PUT /api/workouts/:id
     // Met à jour une séance et remplace complètementr ses exercices
-    async uppdate(req,res) {
+    async update(req,res) {
         try {
             const {title, date, duration, notes, exercises} = req.body;
 

@@ -8,7 +8,7 @@ import Layout from './components/Layout/Layout'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
-// import Exercises from './pages/Exercises'
+import Exercises from './pages/Exercises'
 // import Workouts from './pages/Workout'
 // import WorkoutDetail from './pages/WorkoutDetail'
 // import Profile from './pages/Profile'
@@ -41,7 +41,7 @@ export default function App() {
           <Route element={<PrivateRoute/>}>
             <Route element={<Layout />}>
               <Route path="/dashboard" element={< Dashboard/>}/>
-              {/* <Route path="/exercises" element={< Exercises/>}/> */}
+              <Route path="/exercises" element={< Exercises/>}/>
               {/* <Route path="/workouts " element={< Workouts />}/> */}
               {/* :id = paramètre dynamique récupéré avec useParams() dans workoutdetail */}
               {/* <Route path="/workout/:id" element={< WorkoutDetail/>}/> */}

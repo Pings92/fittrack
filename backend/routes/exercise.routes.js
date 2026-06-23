@@ -9,8 +9,8 @@
 
 const express = require('express');
 const router = express.Router();
-const ExerciseController = require('.../controllers/exercise.controller');
-const authMiddleware = require('.../middleware/auth.middleware');
+const ExerciseController = require('../controllers/exercise.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
 // Applique authMiddleware sur toutes les routes de ce fichier
 // Plus concis que de l'écrire sur chaque router.get/post/put/delete

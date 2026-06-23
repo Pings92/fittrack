@@ -28,10 +28,10 @@ const ExerciseController = {
                 return res.status(400).json({error :`Category must be one of : ${VALID_CATEGORIES.join(', ')}` });
             }
 
-            const exercices = await ExerciseModel.findAll({ category, search});
+            const exercises = await ExerciseModel.findAll({ category, search});
 
             // On retourne auusi le count : utile côté frontend pour afficher "X exercices"
-            res.json({ exercises, count: exercise.length });
+            res.json({ exercises, count: exercises.length });
         } catch (err) {
             console.error('GetAll exercises error:', err);
             res.status(500).json({error: 'Failed to fetch exercises.'});

@@ -38,7 +38,7 @@ export default function Login() {
             // login() est une fonction async qui fait POST/api/auth/login
             // et met à jour le contexte si succès (stocke le token + user)
             await login(email, password)
-            navigate('dashboard') //
+            navigate('/dashboard') //
         } catch (err: unknown) {
             // Extraction du msg d'erreur envoyé par l'api dans ertr.response.data.error
             // La cahine de checks (instanceof + 'response' in err) est necessaire

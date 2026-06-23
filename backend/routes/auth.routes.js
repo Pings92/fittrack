@@ -13,8 +13,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const AuthController = require('.../controllers/auth.controller');
-const authMiddleware = require('.../middleware/auth.middleware');
+const AuthController = require('../controllers/auth.controller');
+const authMiddleware = require('../middleware/auth.middleware');
 
 //POST /api/auth/register - Création de compte (publique, pas de JWT requis)
 router.post('/register', AuthController.register);

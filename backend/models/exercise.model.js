@@ -18,19 +18,19 @@ const ExerciseModel = {
 
         // Filtrage par catégorie (ex: ?category=Musculation) ---- Ajouté seulement si category est défini et non vide
         if (category){
-            query += 'AND category = ?';
+            query += ' AND category = ?';
             //query + 'AND category = ?' = query
-            calues.push(category);
+            values.push(category);
         }
 
         // Recherche textuelle sur le nom OU le groupe musculaire
         // Like avec % = "contient" (ex: %squat% trouve "Front squat", "Back squat") Les deux ? correspondent aux deux valeurs `%${search}%` dans values
         if (search) {
-            query += 'AND (name LIKE ? OR muscle_group LIKE ?';
+            query += ' AND (name LIKE ? OR muscle_group LIKE ?';
             values.push(`%${search}%`, `%${search}%`); // Deux fois la même valeur car deux ? dans la requête
         }
         
-        query += 'ORDER BY category, name';
+        query += ' ORDER BY category, name';
         const [rows] = await db.execute(query, values);
         return rows;
     },
