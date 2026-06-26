@@ -1,17 +1,17 @@
+// ============================================================
+// App.tsx — Racine de l'application React FitTrack
 //
-//
-//
-//
-//
-//
-//
-//
-//
+// Ce composant est le point d'entrée du rendu React (monté dans main.tsx).
+// Il pose les trois fondations de l'app :
+//   1. AuthProvider  : fournit l'utilisateur connecté à toute l'arborescence
+//   2. BrowserRouter : active le routage côté client (React Router v6)
+//   3. Routes        : déclare toutes les pages et leurs chemins URL
+// ============================================================
 
-//
-//
-//
-//
+// ---- React Router v6 ----
+// BrowserRouter : utilise l'API History du navigateur (URLs propres sans #)
+// Routes / Route : déclare les correspondances URL → composant
+// Navigate : redirection déclarative dans le JSX
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 //
@@ -57,11 +57,11 @@ export default function App() {
           Toutes les pages imbriqués hériten de cette protection */}
           <Route element={<PrivateRoute/>}>
             <Route element={<Layout />}>
-              <Route path="/dashboard" element={< Dashboard/>}/>
-              <Route path="/exercises" element={< Exercises/>}/>
-              <Route path="/workouts " element={< Workouts />}/>
+              <Route path="/dashboard" element={<Dashboard/>}/>
+              <Route path="/exercises" element={<Exercises/>}/>
+              <Route path="/workouts" element={<Workouts />}/>
               {/* :id = paramètre dynamique récupéré avec useParams() dans workoutdetail */}
-              <Route path="/workouts/:id" element={< WorkoutDetail/>}/>
+              <Route path="/workouts/:id" element={<WorkoutDetail/>}/>
               {/* <Route path="/profile" element={< Profile/>}/> */}
             </Route>
           </Route>

@@ -14,7 +14,7 @@ import { useEffect, useState, ChangeEvent } from "react";
 // useNavigate: redirection programatique
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
-        ArrowLeft,Calendar, Clock, FileText, Dumbbell,
+        ArrowLeft, Calendar, Clock, FileText, Dumbbell,
         Plus, Pencil, Trash2, Check, X, Loader2
 } from 'lucide-react'
 import toast from "react-hot-toast"

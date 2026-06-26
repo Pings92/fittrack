@@ -45,7 +45,7 @@ const WorkoutModel = {
             `SELECT we.*, e.name, e.category, e.muscle_group
             FROM WorkoutExercise we
             JOIN Exercise e ON we.exercise_id = e.id
-            WHERE we.workout_id =?
+            WHERE we.workout_id = ?
             ORDER BY we.id`,
             [id]
         );
@@ -70,8 +70,8 @@ const WorkoutModel = {
         // weight_used : poids utilisé en kg (peut petre null pour les exercices cardio)
         // duration : durée en secondes (pour les exercices cardio, pas de sets/reps)
         const [result] = await db.execute(
-            'INSERT INTO WorkourExercise (workout_id, exercise_id, sets, reps, weight_used, duration)' +
-            ' VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO WorkoutExercise (workout_id, exercise_id, sets, reps, weight_used, duration)' +
+            ' VALUES (?, ?, ?, ?, ?, ?)',
             [workoutId, exercise_id, sets || null, reps || null, weight_used || null, duration || null] );
         return result.insertId;
     },

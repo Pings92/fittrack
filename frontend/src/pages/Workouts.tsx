@@ -282,7 +282,7 @@ export default function Workouts() {
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
                                         <label className={labelCls}> Date *</label>
-                                        <input name="date" type="date"required value={form.duration} onChange={handleChange} className={inputCls} />
+                                        <input name="date" type="date"required value={form.date} onChange={handleChange} className={inputCls} />
                                     </div>
                                     <div>
                                         <label className={labelCls}>Durée (min)</label>
