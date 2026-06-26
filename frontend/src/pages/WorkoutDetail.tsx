@@ -117,7 +117,7 @@ export default function WorkoutDetail(){
     }
 
     //maj un champ de l'étatd 'édition d'un exo spécifique
-     const changeEdit = (weId:number, field: keyof EditState, value: String) =>{
+     const changeEdit = (weId:number, field: keyof EditState, value: string) =>{
         setEditing((prev) => ({ ...prev, [weId]: { ...prev[weId], [field]: value } } ))
      }
 
@@ -319,17 +319,30 @@ export default function WorkoutDetail(){
                                             {isCardio ? (
                                                 <div>
                                                     <label className="text-xs text-slate-500">Durée</label>
-                                                    <input type="number" />
+                                                    <input type="number" value={editing[ex.id].duration} onChange={(e) => changeEdit(ex.id, 'duration', e.target.value)} placeholder="1800" className={`mt-1 ${miniInput}`} />
                                                 </div>
                                             ) : (
-                                                <div>
+                                                <div className="grid grid-cols-3 gap-2">
                                                     {([
-                                                        {field: 'sets', label: 'Séries', ph: '4'},
-                                                        {field: 'reps', label: 'Reps', ph: '8'},
-                                                        {field: 'weight_used', label: 'Poids (kg)', ph: '80'},
-                                                    ])}
+                                                        { field: 'sets', label: 'Séries', ph: '4' },
+                                                        { field: 'reps', label: 'Reps', ph: '8'},
+                                                        { field: 'weight_used', label: 'Poids (kg)', ph: '80'},
+                                                    ] as const).map(({ field, label, ph }) => (
+                                                        <div>
+                                                            <label className="text-xs text-slate-500"> {label}</label>
+                                                            <input type="number" value={editing[ex.id][field]} onChange={(e) => changeEdit(ex.id, field, e.target.value)} placeholder={ph} className={`mt-1 ${miniInput}`} />
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             )}
+{/* reprendre là */}
+                                            <div className="flex gap- pt-">
+                                                <button onClick={() => cancelEdit(ex.id)} className="flex items-center gap-3 px-3 py-1.5 border border-slate-600 rounded-lg text-xs text-slate-400 hover:bg-slate-700/40 transition-colors"><X size={11}/>Annuler</button>
+                                                <button onClick={() => saveEdit(ex.id)} disabled={isSaving} className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled: opacity-60 rounded-lg text-xs text-white font-medium transition-colors">
+                                                    {isSaving ? <Loader2 size={11} className="animate-spin" /> : <Check size={11} />}
+                                                    Enregistrer
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
