@@ -191,7 +191,7 @@ export default function Workouts() {
                 const res = await api.post('/workouts', payload)
                 // Ajout en tête de liste ppour que la nouvelle séance apparaisse en premier
                 setWorkouts([{ ...res.data.workout, exercise_count: payload.exercises.length }, ...workouts])
-                toast.success('Séane créée')
+                toast.success('Séance créée')
             }
             setModalOpen(false)
         } catch (err: unknown) {
@@ -282,7 +282,7 @@ export default function Workouts() {
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
                                         <label className={labelCls}> Date *</label>
-                                        <input name="date" type="date"required value={form.date} onChange={handleChange} className={inputCls} />
+                                        <input name="date" type="date" required value={form.date} onChange={handleChange} className={inputCls} />
                                     </div>
                                     <div>
                                         <label className={labelCls}>Durée (min)</label>
