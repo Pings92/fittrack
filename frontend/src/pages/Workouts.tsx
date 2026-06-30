@@ -238,7 +238,7 @@ export default function Workouts() {
                     </button>
                 </div>
             ) : (
-                <div className="space y-3">
+                <div className="space-y-3">
                     {workouts.map((w)=> (
                         <div key={w.id} className="bg-[#1E293B] border border-slate-700/50 rounded-2xl p-5 flex items-center gap-4">
                             <div className="flex-1 min-w-0">
@@ -311,7 +311,7 @@ export default function Workouts() {
                                     {/* loader pendant le charment des exercices de la séance éditée */}
                                     {loadingEdit ? (
                                         <div className="flex items-center justify-center py-6 text-slate-500">
-                                        <Loader2 size={18} className="animate-sppin mr-2" />  
+                                        <Loader2 size={18} className="animate-spin mr-2" />  
                                         <span className="text-xs"> chargement des exercices...</span>
                                         </div>
                                     ) : form.exercises.length === 0 ? (
@@ -380,7 +380,7 @@ export default function Workouts() {
                                     )} 
                                 </div>
 
-                                <div>
+                                <div className="flex gap-3 pt-2">
                                     <button type="button" onClick={()=> setModalOpen(false)} className="flex-1 border border-slate-600 text-slate-300 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-700/40 transition-colors"> Annuler </button>
                                 <button type="submit" disabled={submitting || loadingEdit} className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 text-white py-2.5 rounded-lg text-sm font-medium transition-colors">
                                     {submitting ? 'Enregistrement...' : editTarget ? 'Enregistrer' : 'Créer'}
@@ -399,7 +399,7 @@ export default function Workouts() {
                         <h2 className="text-base font-semibold text-slate-100 mb-2">Supprimer la séance</h2>
                         <p className="text-sm text-slate-400 mb-6">Cette action est irreversible.</p>
                         <div className="flex gap-3">
-                            <button onClick={()=> setDeleteId(null)} className="flex-1 border-slate-600 text-slate-300 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-700/40 transition-colors">Cancel</button>
+                            <button onClick={()=> setDeleteId(null)} className="flex-1 border border-slate-600 text-slate-300 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-700/40 transition-colors">Cancel</button>
                             <button onClick={() => handleDelete(deleteId)} className="flex-1 bg-red-600 hover:bg-red-500 text-white py-2.5 rounded-lg text-sm font-medium transition-colors">Delete</button>
                         </div>
                     </div>

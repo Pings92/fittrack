@@ -137,7 +137,7 @@ const WorkoutController = {
             // req.params.id = id de la séance (pour vérifier l'appartenance)
             await WorkoutModel.updateExercise(req.params.weId, req.params.id, {sets, reps, weight_used, duration});
             
-            const update = await WorkoutModel.findById(req.params.id, req.user.id);
+            const updated = await WorkoutModel.findById(req.params.id, req.user.id);
             res.json({message: 'Exercise updated.', workout: updated });
         }   catch (err) {
             res.status(500).json({error: 'Failed to update exercise.'});
