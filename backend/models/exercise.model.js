@@ -26,7 +26,7 @@ const ExerciseModel = {
         // Recherche textuelle sur le nom OU le groupe musculaire
         // Like avec % = "contient" (ex: %squat% trouve "Front squat", "Back squat") Les deux ? correspondent aux deux valeurs `%${search}%` dans values
         if (search) {
-            query += ' AND (name LIKE ? OR muscle_group LIKE ?';
+            query += ' AND (name LIKE ? OR muscle_group LIKE ?)';
             values.push(`%${search}%`, `%${search}%`); // Deux fois la même valeur car deux ? dans la requête
         }
         
@@ -49,7 +49,7 @@ const ExerciseModel = {
         );//muscle_group et description sont optionnels -> null si absents
     // On relit l'exercice crée depuis la BDD pour retourner l'objet complet
     // (avec l'id AUTO_INCREMENT, created_at, etc) plutôt que de le reconstruire/que juste l'insertID
-    return this.findById(result.insertId)
+    return this.findById(result.insertId);
     },
 
     // UPDATE: Mettre à jour un exercice (mise à jour partielle) 
