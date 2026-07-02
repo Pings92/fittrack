@@ -1,12 +1,12 @@
-module.export = {
+module.exports = {
     testEnvironment: 'node',
-    setupFiles: ['./test/setup.js'],
+    setupFiles: ['./tests/setup.js'],
     coverageDirectory: 'coverage',
     collectCoverageFrom: [
         'controllers/**/*.js',
         'middleware/**/*.js',
         'routes/**/*.js'
     ],
-    testMatch: ['**/test/**/*.test.js'],
+    testMatch: ['**/tests/**/*.test.js'],
     verbose: true,
 };

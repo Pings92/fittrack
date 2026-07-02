@@ -25,7 +25,7 @@ const authMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
     
     //Vérification de la premiere et du format "Bearer <token>" rappel "||" signifie "et"
-    if (!authHeader || !authHeader.startsWith('Bearer')) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({error:'Acces denied. No token provided.'});
     // 401 = Non authentifié (il manque ou le token est absent/malinformé)
     }
@@ -35,7 +35,7 @@ const authMiddleware = (req, res, next) => {
     try {
         //jwt.verify décode ET vérifi la signature avec la clé secreète.
         // Si le Token a été modifié ou signé avec une autre clé -> exception
-        // si la date  d'expiration est dépassé -> exception TokkenExpiredError.
+        // si la date  d'expiration est dépassé -> exception TokenExpiredError.
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // On attache l'identité décodée à req.user pour que les controleurs
@@ -45,11 +45,12 @@ const authMiddleware = (req, res, next) => {
         //next() passe la main au prochain middleware ou au controlleur
         next();
     } catch (err){
-        //Distinction entre token expiré et token invalide pour un meilleur message
-        if (err.name === 'TokkenExpiredError') {
-            return res.status(401).json({error : 'Token expired. Please Login again.'});
+        // console.log('ERREUR JWT:', err.name, '-', err.message);
+        // console.log('SECRET DANS LE MIDDLEWARE:' ,process.env.JWT_SECRET);        //Distinction entre token expiré et token invalide pour un meilleur message
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({error : 'Token expired. Please log in again.'});
         }
-            return res.status(401).json({error : 'Invalid token.'});
+        return res.status(401).json({error : 'Invalid token.'});
         }
     };
 

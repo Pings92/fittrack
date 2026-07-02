@@ -124,7 +124,7 @@ describe('Workout Routes', () => {
                 .set(authHeader())
                 .send({date: '2024-01-15'});
 
-            expect(res.status).toBe(400);f
+            expect(res.status).toBe(400);
             expect(res.body.error).toBe('Title and date are required.');//
         });
 
@@ -188,7 +188,7 @@ describe('Workout Routes', () => {
                 .set(authHeader());
 
             expect(res.status).toBe(404);
-            expect(res.body.error).toBe('Body not found.');//
+            expect(res.body.error).toBe('Workout not found.');//
         });
         
         it('retourne 401 sans token', async () => {
