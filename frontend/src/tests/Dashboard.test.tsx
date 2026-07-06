@@ -17,7 +17,7 @@ import { ProgressionStats, User } from '../types'
 import api from '../services/api'
 
 //
-vi.mock('../services/api' () => ({
+vi.mock('../services/api', () => ({
     default: {get: vi.fn()},
 }))
 
@@ -141,7 +141,7 @@ const renderDashboard = (ctx = makeAuthContext()) =>
                 mockGet.mockResolvedValue({data:mockStats })
                 renderDashboard()
 
-                await waitFor() => {
+                await waitFor(() => {
                     //
                     expect(screen.getByText('Séance du lundi')).toBeInTheDocument()
                 })
@@ -168,12 +168,12 @@ const renderDashboard = (ctx = makeAuthContext()) =>
             })
 
             it("affiche l'objectif de l'utilisateur", async () => {
-                mockGet.mockResolvedValue({data: MockStats})
+                mockGet.mockResolvedValue({data: mockStats})
                 renderDashboard()
 
                 await waitFor(() => {
                     //
-                    expect(screen.getByText(/Maintien du poids)).toBeInTheDocument()
+                    expect(screen.getByText(/Maintien du poids/)).toBeInTheDocument()
                 })
             })
         })
