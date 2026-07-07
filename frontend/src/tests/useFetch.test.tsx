@@ -12,7 +12,7 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 //
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook, waitFor, act } from "@testing-library/react";
 import { useFetch } from "../hooks/useFetch";
 import api from "../services/api";
 
@@ -110,10 +110,13 @@ describe('useFetch', () => {
             //
             mockGet.mockReturnValue(new Promise (() =>{}))
 
-            result.current.refetch()
+            act(() => {
+                result.current.refetch()
+            })
 
             //
-            await waitFor(() => expect(result.current.loading).toBe(true) )
+            // await waitFor(() => expect(result.current.loading).toBe(true) )
+            expect(result.current.loading).toBe(true) 
         })
 
         it('appelle api.get avec la bonne URL', async () => {

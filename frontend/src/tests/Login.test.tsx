@@ -74,7 +74,7 @@ describe('Login', () => {
     // 
     // 
     expect(screen.getByPlaceholderText('ton@email.com')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('••••••••')).toBeInTheDocument()
+    expect(screen.getByPlaceholderText('******')).toBeInTheDocument()
     // 
     expect(screen.getByRole('button', { name: /se connecter/i })).toBeInTheDocument()
     // 
@@ -95,8 +95,8 @@ describe('Login', () => {
     renderLogin()
 
     // 
-    await user.type(screen.getByPlaceholderText('ton@example.com'), 'test@example.com')
-    await user.type(screen.getByPlaceholderText('••••••••'), 'password123')
+    await user.type(screen.getByPlaceholderText('ton@email.com'), 'test@example.com')
+    await user.type(screen.getByPlaceholderText('******'), 'password123')
     await user.click(screen.getByRole('button', { name: /se connecter/i }))
 
     // 
@@ -111,7 +111,7 @@ describe('Login', () => {
     renderLogin()
 
     await user.type(screen.getByPlaceholderText('ton@email.com'), 'test@example.com')
-    await user.type(screen.getByPlaceholderText('••••••••'), 'password123')
+    await user.type(screen.getByPlaceholderText('******'), 'password123')
     await user.click(screen.getByRole('button', { name: /se connecter/i }))
 
     await waitFor(() => {
@@ -129,7 +129,7 @@ describe('Login', () => {
     renderLogin()
 
     await user.type(screen.getByPlaceholderText('ton@email.com'), 'bad@example.com')
-    await user.type(screen.getByPlaceholderText('••••••••'), 'wrongpass')
+    await user.type(screen.getByPlaceholderText('******'), 'wrongpass')
     await user.click(screen.getByRole('button', { name: /se connecter/i }))
 
     await waitFor(() => {
@@ -144,7 +144,7 @@ describe('Login', () => {
     renderLogin()
 
     await user.type(screen.getByPlaceholderText('ton@email.com'), 'test@example.com')
-    await user.type(screen.getByPlaceholderText('••••••••'), 'password123')
+    await user.type(screen.getByPlaceholderText('******'), 'password123')
     await user.click(screen.getByRole('button', { name: /se connecter/i }))
 
     await waitFor(() => {
