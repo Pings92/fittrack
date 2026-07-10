@@ -69,6 +69,7 @@ export default function RegisterScreen({ navigation }: Props) {
       })
       // Pas besoin de navigate() — AuthContext met user à jour, RootNavigator redirige automatiquement
     } catch (err: unknown) {
+      console.error("Debug register : ", JSON.stringify(err, Object.getOwnPropertyNames(err)))
       const msg =
         err instanceof Error && 'response' in err
           ? (err as { response?: { data?: { error?: string } } }).response?.data?.error

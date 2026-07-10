@@ -9,12 +9,12 @@ const mysql = require('mysql2/promise');
 // quand une requette arrive, elle prend une connexion disponible, l'utilise, 
 // puis la relache dans le pool (elle n'est pas fermé, juste réutilisé)
 const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'mysql',
+    // host: process.env.DB_HOST || 'mysql',
+    host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT) || 3306, 
     database: process.env.DB_NAME || 'fittrack', 
     user: process.env.DB_USER || 'fittrack_user', 
     password: process.env.DB_PASSWORD || 'fittrack_pass', 
-
     //utf8mb4 supporte tous les caractères Unicode (dont les emoji et accents)
     // sans ça, les caractères spéciaux peuvent être corrompus à l'insertion
     charset : 'utf8mb4',
