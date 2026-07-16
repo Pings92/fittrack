@@ -8,4 +8,5 @@
 //
 //ton backend docker écoute sur le port 5000
 //
-export const API_URL = 'http://192.168.1.21:5000/api'
+// export const API_URL = 'http://192.168.1.21:5000/api'
+export const API_URL = 'https://fittrack-qct1.onrender.com/api'
